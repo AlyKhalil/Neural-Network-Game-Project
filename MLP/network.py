@@ -17,18 +17,32 @@ class Network:
         self.eta = eta
         self.alpha = alpha
 
-    def get_final_weights(self):
-        '''
-        Colects all the weights of the neurons
-        in the Neural Network and returns them
-        '''
-        weights = []
+    def get_weights_snapshot(self):
+        """
+        Returns a deep copy of all weights and biases in the network.
+        Format: list of layers -> list of neurons -> (weights_copy, bias_copy)
+        """
+        snapshot = []
         for layer in self.layers:
-            layer_weights = []
+            layer_copy = []
             for neuron in layer.neurons:
-                layer_weights.append(neuron.weights)
-            weights.append(layer_weights)
-        return weights
+                layer_copy.append((
+                    neuron.weights.copy(),
+                    float(neuron.bias)
+                ))
+            snapshot.append(layer_copy)
+        return snapshot
+
+    def set_weights_snapshot(self, snapshot):
+        """
+        Restores all weights and biases from a snapshot created
+        by get_weights_snapshot().
+        """
+        for L_idx, layer in enumerate(self.layers):
+            for N_idx, neuron in enumerate(layer.neurons):
+                weights_copy, bias_copy = snapshot[L_idx][N_idx]
+                neuron.weights = weights_copy.copy()
+                neuron.bias = float(bias_copy)
 
     def forward(self, inputs: np.array):
         '''

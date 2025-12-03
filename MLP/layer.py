@@ -8,8 +8,13 @@ class Layer:
     def __init__(self, num_inputs, num_neurons, activation_function):
         self.neurons = [Neuron(num_inputs) for _ in range(num_neurons)]
         self.activation_function = activation_function
-        self.inputs = np.zeros(num_inputs)
-        self.outputs = np.zeros(num_neurons)
+        self.inputs = np.zeros(num_inputs, dtype=float)
+        self.outputs = np.zeros(num_neurons, dtype=float)
+
+        # used inside forward/backward/update methods to avoid repeated allocations
+        self._weights_mat = None
+        self._biases = None
+        self._deltas = np.zeros(num_neurons, dtype=float)
 
     def forward(self):
         weights = np.array([n.weights for n in self.neurons])       # (num_neurons, num_inputs)
