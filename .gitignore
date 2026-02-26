@@ -40,3 +40,10 @@ env/
 .ENV/
 env.bak/
 venv.bak/
+
+MLP/venv/
+MLP/.venv/
+MLP/env/
+MLP/.ENV/
+MLP/env.bak/
+MLP/venv.bak/
